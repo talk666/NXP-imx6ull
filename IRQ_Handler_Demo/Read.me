@@ -1,0 +1,68 @@
+
+1、关闭MMU i.dcache（要用协处理器进行处理 协处理器有自己的寄存器）
+通过Cp15协处理器 SCTLR寄存器 bit0 MMU开关位 bit1对齐 bit2控制Dcache打开关闭
+bit12 Icache开关
+
+2、通过key0进行 通过中段控制灯
+3、修改start.s 编写复位中断函数和其他IRQ中断函数
+4、设置处理器九种工作模式下 需要各自设置IRQ模式下的SP指针，设置所有模式下的SP指针
+5、清除BSS段
+
+6、设置向量表偏移 ->写到CP15协处理器的VBAR寄存器
+
+
+
+arm流程  
+不管处理器处于何种状况，程序计数器R15(PC)总是指向“正在取指”的指令
+
+0x200 ldr r0, =111   PC=&取指   译指   执行
+        0x204 ldr r1, =112   PC=&取指  译指    执行
+                0x208 ldr r2, =113   PC=&取指 译指    执行
+                        0x20C ldr r3, =114   PC=&取指 译指  执行
+
+
+ARM正在执行第1条指令的同时对第2条指令进行译码，并将第3条指令从存储器中取出。
+所以，ARM7流水线只有在取第4条指令时，第1条指令才算完成执行
+
+处理器处于ARM状态时，每条指令为4个字节，所以PC值为正在执行的指令地址加8字节，即是：
+PC值 = 当前程序执行位置 + 8字节
+
+
+
+/*关于bss段和common段*/
+如果定义的全局变量初始化为-0 保存在bss段
+如果定义的全局变量初始化为-非0 保存在data段
+如果定义的全局变量未进行初始化 保存在common段，等到链接的时候放到bss段置0
+//test1  放到bss段
+void main()
+{
+        int init1 = 0;
+        printf("%d\r\n",init1);
+}
+
+//test2  放到data段
+void main()
+{
+        int init1 = 1;
+        printf("%d\r\n",init1);
+}
+//一起链接test1 2时会报错 全局变量定义相同
+
+//test1  放到bss段
+void main()
+{
+        int init1 = 0;
+        printf("%d\r\n",init1);
+}
+
+//test2  放到common段
+void main()
+{
+        int init1;
+        printf("%d\r\n",init1);
+}
+//一起链接test1 2时不会报错
+
+
+
+rodata段放一些#define 字符串数据

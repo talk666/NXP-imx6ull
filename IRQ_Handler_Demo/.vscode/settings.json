@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "bsp_exti.h": "c",
+        "bsp_gpio.h": "c",
+        "bsp_int.h": "c"
+    }
+}
