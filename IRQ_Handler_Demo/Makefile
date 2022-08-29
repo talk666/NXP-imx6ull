@@ -80,7 +80,7 @@ $(COBJS) : obj/%.o : %.c
 
 
 clean:
-	$(RM) ./obj/*
+	$(RM) ./obj/*.o ./obj/*.bin ./obj/*.dis ./obj/*.imx ./obj/*.elf
 
 
 print:
