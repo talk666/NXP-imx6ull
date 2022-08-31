@@ -2,6 +2,8 @@
 #define __IMX6U__
 
 #define IFCONFIG_INTERFACE   0
+#define IFCONFIG_EXITFILTER   1
+
 #include "core_ca7.h"
 #include "cc.h"
 #include "fsl_iomuxc.h"

@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "bsp_exti.h": "c",
+        "imx6ul.h": "c",
+        "bsp_key_zero.h": "c",
+        "bsp_epit.h": "c"
+    }
+}

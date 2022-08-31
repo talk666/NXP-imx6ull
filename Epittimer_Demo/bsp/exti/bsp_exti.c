@@ -1,6 +1,6 @@
 #include "bsp_exti.h"
 
-//初始化外部中断 gpio18
+//初始化外部中断 gpio18   //通过定时器添加过滤功能
 void exti_init(void)
 {
     //复用为gpio  为gpio1-io18     GPIO1_IO18 of instance: gpio1
@@ -33,11 +33,30 @@ void exti_init(void)
     
     gpio_ableInterrupt(GPIO1, 18);
 #endif
+
+#if IFCONFIG_EXITFILTER
+    /*初始化定时器*/
+    filtertimer_init(1000000/100); //10ms
+#endif
+
+}
+
+/*初始化定时器*/
+void filtertimer_init(unsigned int value)
+{
+    epit_init(66 - 1, value);
 }
 
 /*中断处理函数*/
 void gpio1_io18_irqhandle(unsigned int gicciar, void * param) //按键中断函数
 {
+#if IFCONFIG_EXITFILTER
+    /*开启定时器  开启10ms结束后会进入定时器中断函数*/ 
+    restart_epit1(1000000/100); //10ms
+
+    /*清除中断标志位*/
+    gpio_clearintflags(GPIO1, 18);
+#else
     static unsigned char state = 0;
     delay(30); /*在实际的开发中 禁止在中断函数中使用delay函数*/
     if(gpio_pinread(GPIO1, 18) == 0)
@@ -48,6 +67,7 @@ void gpio1_io18_irqhandle(unsigned int gicciar, void * param) //按键中断函�
 
     //清除中断标志位
     gpio_clearintflags(GPIO1, 18);
+#endif
 }
 
 

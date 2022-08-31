@@ -17,17 +17,21 @@ int main(void)
 {
 	int_init();                     /*中断处理*/
 
-	Imx6u_clkinit();
+	Imx6u_clkinit();				/*时钟使能初始化*/
+
 	clk_enable();          			/* 使能所有的时钟*/
 
 	led_init();            			/* 初始化led*/
-	Key_Init();            			/*按键初始化*/
+	//Key_Init();            		/*按键初始化*/
+	
 	Beep_Init();                    /*蜂鸣器初始化*/
 
-	//exti_init();                   /*按键中断初始化*/
+	exti_init();                   /*按键中断初始化*/
+
+#if !IFCONFIG_EXITFILTER
 	//66MHZ 设置为66分频 时钟为1MHZ    也就是说1s -> 1000000次    装载值为1000000为1s
 	epit_init(66 - 1, 1000000/2);
-
+#endif
 	while(1);
 
 	return 0;

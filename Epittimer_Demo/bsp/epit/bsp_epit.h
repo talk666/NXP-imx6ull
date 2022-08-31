@@ -8,5 +8,6 @@
 /*参数为分频系数和装载值*/
 void epit_init(unsigned int frac, unsigned int value);
 void epit1_irqhandle(unsigned int gicciar, void * param); //定时器中断函数
-
+void disable_epit1(void);
+void restart_epit1(unsigned value);
 #endif

@@ -31,7 +31,7 @@ void led_init(void)
 #else
 	gpio_pin_config gpio_pin_config_t;
 	gpio_pin_config_t.direction = KGPIO_DigitalOutput;
-	gpio_pin_config_t.outputLogic = 1; //设置默认电平 低电平，打开LED0  高电平，关闭LED0 
+	gpio_pin_config_t.outputLogic = 0; //设置默认电平 低电平，打开LED0  高电平，关闭LED0 
 	
 	gpio_init(GPIO1, 3, &gpio_pin_config_t);
 #endif
@@ -85,4 +85,13 @@ void led_turn(void)
 		//开灯
 		led_on();
 	}
+}
+
+void led_Trun_status(unsigned char status)
+{
+    if(status)//开
+        led_on();
+    else   //关
+        led_off();
+
 }
