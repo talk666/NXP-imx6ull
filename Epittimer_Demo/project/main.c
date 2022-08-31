@@ -23,16 +23,22 @@ int main(void)
 
 	led_init();            			/* 初始化led*/
 	//Key_Init();            		/*按键初始化*/
-	
+
 	Beep_Init();                    /*蜂鸣器初始化*/
 
 	exti_init();                   /*按键中断初始化*/
+
+	delay_init();                  /*延迟函数使用GPT定时器初始化*/
 
 #if !IFCONFIG_EXITFILTER
 	//66MHZ 设置为66分频 时钟为1MHZ    也就是说1s -> 1000000次    装载值为1000000为1s
 	epit_init(66 - 1, 1000000/2);
 #endif
-	while(1);
+
+	while(1){
+		delay_s(1);
+		led_turn();
+	}
 
 	return 0;
 }
