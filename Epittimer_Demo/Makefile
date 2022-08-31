@@ -16,6 +16,7 @@ INCLUDES =  imx6ul \
 			bsp/key   \
 			bsp/beep   \
 			bsp/exti   \
+			bsp/epit \
 			bsp/int
 INCLUDE = $(patsubst %, -I %, $(INCLUDES))
 
@@ -29,6 +30,7 @@ SRCDIRS =   project \
 			bsp/key \
 			bsp/beep   \
 			bsp/exti   \
+			bsp/epit \
 			bsp/int
 SRC_S = $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.s))
 SRC_C = $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
