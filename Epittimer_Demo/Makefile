@@ -17,6 +17,7 @@ INCLUDES =  imx6ul \
 			bsp/beep   \
 			bsp/exti   \
 			bsp/epit \
+			bsp/uart \
 			bsp/int
 INCLUDE = $(patsubst %, -I %, $(INCLUDES))
 
@@ -31,6 +32,7 @@ SRCDIRS =   project \
 			bsp/beep   \
 			bsp/exti   \
 			bsp/epit \
+			bsp/uart \
 			bsp/int
 SRC_S = $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.s))
 SRC_C = $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
@@ -43,12 +45,16 @@ COBJS = $(patsubst %, obj/%, $(OBJS_FILE_C:.c=.o))
 OBJS = $(SOBJS)$(COBJS)
 
 
-CFLAGS=-g
+CFLAGS = -g
 #CFLAGS+=-O2
-CFLAGS+=-Wall
+CFLAGS += -Wall
 #不需要系统自带的启动文件 不加这个会用系统的启动文件 ===不连接系统标准启动文件和标准库文件，只把指定的文件传递给连接器。
-CFLAGS+=-nostdlib
-CFLAGS+= $(INCLUDE)
+CFLAGS += -nostdlib
+CFLAGS += $(INCLUDE)
+#不使用C语言的内建库 可以跟其相同名字
+CFLAGS += -fno-builtin 
+CFLAGS += -O2
+
 
 .PHONY:clean
 

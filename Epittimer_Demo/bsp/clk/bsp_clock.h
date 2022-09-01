@@ -9,6 +9,7 @@ void clk_enable(void);
 void Imx6u_clkinit(void);
 void Set_pll2_pfd(void);
 void Set_pll3_pfd(void);
+void Uart_clk_init(void);
 
 void AHB_CLK_ROOT_Init(void);
 void IPG_CLK_ROOT_Init(void);

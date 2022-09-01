@@ -3,6 +3,8 @@
         "bsp_exti.h": "c",
         "imx6ul.h": "c",
         "bsp_key_zero.h": "c",
-        "bsp_epit.h": "c"
+        "bsp_epit.h": "c",
+        "bsp_uart.h": "c",
+        "bsp_led.h": "c"
     }
 }

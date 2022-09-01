@@ -39,6 +39,9 @@ void Imx6u_clkinit(void)
 	AHB_CLK_ROOT_Init();
 	IPG_CLK_ROOT_Init();
 	PERCLK_CLK_ROOT_Init();
+
+	/*使能串口时钟*/
+	Uart_clk_init();
 }
 
 //CCM_ANALOG_PFD_528n 设置pll2的4路fd时钟
@@ -108,4 +111,11 @@ void PERCLK_CLK_ROOT_Init(void)
 	//CCM_CSCMR1 bit0-5 清零  分频设置
 	CCM->CSCMR1 &= ~(0x3f<<0);
 	//CCM->CSCMR1 |= (0<<0); //1分频 不用写  IPG_CLK_ROOT_Init = 66/1 = 66hz
+}
+
+/*配置uart根时钟源*/
+void Uart_clk_init(void)
+{
+	CCM->CSCDR1 &= ~(1 << 6);/*uart_clk = pll3_clk = 480M  进行6分频后为80M*/
+	CCM->CSCDR1 &= ~0x3f;/*一分频*/
 }

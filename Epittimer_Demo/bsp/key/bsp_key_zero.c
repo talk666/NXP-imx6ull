@@ -3,7 +3,6 @@
 #include <stdio.h>
 void Key_Init(void)
 {
-    gpio_pin_config gpio_pin_config_t;
 
     //复用为gpio  为gpio1-io18
     SW_MUX_CTL_PAD_UART1_CTS_B = 0x5; //101
@@ -22,6 +21,8 @@ void Key_Init(void)
     //IO初始化
     GPIO1->GDIR &= ~(1<<18); //bit18 设置为输入
 #else
+    gpio_pin_config gpio_pin_config_t;
+
     //接口初始化
     gpio_pin_config_t.direction = KGPIO_DigitalInput;
     gpio_init(GPIO1, 18, &gpio_pin_config_t);
