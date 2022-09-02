@@ -1082,6 +1082,7 @@ static inline void IOMUXC_SetPinMux(uint32_t muxRegister,
                                     uint32_t configRegister,
                                     uint32_t inputOnfield)
 {
+    //赋值MUX_MODE(复用为哪种模式) 和 SION(Software Input On Field)位
     *((volatile uint32_t *)muxRegister) =
         IOMUXC_SW_MUX_CTL_PAD_MUX_MODE(muxMode) | IOMUXC_SW_MUX_CTL_PAD_SION(inputOnfield);
 

@@ -70,6 +70,11 @@ void uart_io_init(void)
     /* 1、初始化IO复用 */
 	IOMUX_SW_MUX->UART1_TX_DATA = 0;/* 复用为Select mux mode: ALT0 mux port: UART1_TX of instance: uart1 */
 	IOMUX_SW_MUX->UART1_RX_DATA = 0;/* 复用为Select mux mode: ALT0 mux port: UART1_RX of instance: uart1 */
+	
+    
+    /*注意！！！！！需要进行配置输入引脚？？？不配置这里不会接收信息*/
+    //11 UART1_RX_DATA_ALT0 — Selecting Pad: UART1_RX_DATA for Mode: ALT0
+    UART1_RX_DATA_SELECT_INPUT = 0x3;
 
 	/* 2、配置uart1/uart2的IO属性	
 	 *bit 16:0 HYS关闭
