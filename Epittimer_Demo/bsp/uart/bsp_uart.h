@@ -24,4 +24,7 @@ unsigned char getc(void);
 
 void putc(unsigned char c);
 
+void uart_setbaudrate(UART_Type *base, unsigned int baudrate, unsigned int srcclock_hz);
+
+
 #endif

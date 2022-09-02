@@ -41,7 +41,7 @@ int main(void)
 
 	while(1){
 
-		puts("请输入 1 个字符:");
+		puts("请输入 -1- 个字符:");
 		a=getc();
 		putc(a); /* 回显功能 */
 		puts("\r\n");

@@ -7,6 +7,8 @@ OBJDUMP=$(COMPILE)objdump
 
 IMXDIR=$(shell cd .. && pwd)
 
+LIBPATH := -L /usr/local/arm/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/lib/gcc/arm-linux-gnueabihf/4.9.4 -lgcc
+
 #获取所有.h路径
 INCLUDES =  imx6ul \
 			gpio \
@@ -69,7 +71,7 @@ VPATH := $(SRCDIRS)
 
 build:$(OBJS)
 #链接.o为elf
-	$(LD) -Timx6ull.lds $(OBJS) -o $(target).elf
+	$(LD) -Timx6ull.lds $(OBJS)  $(LIBPATH) -o $(target).elf
 	$(OBJCOPY) -O binary -S -g  $(target).elf $(target).bin
 	$(OBJDUMP) -D $(target).elf > $(target).dis
 
