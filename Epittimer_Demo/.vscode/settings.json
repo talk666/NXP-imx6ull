@@ -6,6 +6,7 @@
         "bsp_led.h": "c",
         "bsp_exti.h": "c",
         "bsp_delay.h": "c",
-        "cstdio": "c"
+        "cstdio": "c",
+        "bsp_uart.h": "c"
     }
 }

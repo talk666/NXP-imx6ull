@@ -20,7 +20,9 @@ INCLUDES =  imx6ul \
 			bsp/exti   \
 			bsp/epit \
 			bsp/uart \
-			bsp/int
+			bsp/int  \
+			stdio/include \
+			stdio/lib 
 INCLUDE = $(patsubst %, -I %, $(INCLUDES))
 
 
@@ -35,7 +37,10 @@ SRCDIRS =   project \
 			bsp/exti   \
 			bsp/epit \
 			bsp/uart \
-			bsp/int
+			bsp/int \
+			stdio/include \
+			stdio/lib 
+
 SRC_S = $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.s))
 SRC_C = $(foreach dir, $(SRCDIRS), $(wildcard $(dir)/*.c))
 
@@ -56,7 +61,7 @@ CFLAGS += $(INCLUDE)
 #不使用C语言的内建库 可以跟其相同名字
 CFLAGS += -fno-builtin 
 CFLAGS += -O2
-
+CFLAGS += -Wa,-mimplicit-it=thumb
 
 .PHONY:clean
 

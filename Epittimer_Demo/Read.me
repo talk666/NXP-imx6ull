@@ -6,3 +6,7 @@ I.MX6U-ALPHA 开发板的 DDR 容量有两种：512MB 和 256MB，起始地址�
 量的终止地址为 0X8FFFFFFF。之所以选择 0X87800000 这个地址是因为后面要讲的 Uboot 其
 链接地址就是 0X87800000，这样我们统一使用 0X87800000 这个链接地址，不容易记混
 */
+
+
+/*/tmp/ccMGHCE6.s:60: Error: thumb conditional instruction should be in IT block -- `addcs r5,r5,#65536'*/
+解决:CFLAGS += -Wa,-mimplicit-it=thumb makefile中添加

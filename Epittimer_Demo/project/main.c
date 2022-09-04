@@ -7,6 +7,7 @@
 #include "bsp_beep.h"
 #include "bsp_epit.h"
 #include "bsp_uart.h"
+#include "stdio.h"
 
 /*
  * @description : mian函数
@@ -16,7 +17,7 @@
 int main(void)
 {
 
-	unsigned char a = 0;
+	int a, b;
 
 	int_init();                     /*中断处理*/
 
@@ -39,18 +40,12 @@ int main(void)
 	epit_init(66 - 1, 1000000/2);
 #endif
 
-	while(1){
-
-		puts("请输入 -1- 个字符:");
-		a=getc();
-		putc(a); /* 回显功能 */
-		puts("\r\n");
-
-		/* 显示输入的字符 */
-		puts("您输入的字符为:");
-		putc(a);
-		puts("\r\n\r\n");
-
+	while(1)					
+	{	
+		printf("输入两个整数，使用空格隔开:");
+		scanf("%d %d", &a, &b);					 		/* 输入两个整数 */
+		printf("\r\n数据%d + %d = %d\r\n\r\n", a, b, a+b);	/* 输出两个数相加的和 */
+		printf("%d的16进制数据为%#x\r\n", a+b, a+b);
 		led_turn();
 	}
 
