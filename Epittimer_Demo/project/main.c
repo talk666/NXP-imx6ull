@@ -7,6 +7,7 @@
 #include "bsp_beep.h"
 #include "bsp_epit.h"
 #include "bsp_uart.h"
+#include "bsp_rtc.h"
 #include "stdio.h"
 
 /*
@@ -17,7 +18,8 @@
 int main(void)
 {
 
-	int a, b;
+	struct rtc_datetime rtcdate;
+	char buff[160] = {0};
 
 	int_init();                     /*中断处理*/
 
@@ -40,14 +42,16 @@ int main(void)
 	epit_init(66 - 1, 1000000/2);
 #endif
 
-	while(1)					
-	{	
-		printf("输入两个整数，使用空格隔开:");
-		scanf("%d %d", &a, &b);					 		/* 输入两个整数 */
-		printf("\r\n数据%d + %d = %d\r\n\r\n", a, b, a+b);	/* 输出两个数相加的和 */
-		printf("%d的16进制数据为%#x\r\n", a+b, a+b);
-		led_turn();
-	}
+	RTC_Init();                      /*rtc初始化*/
 
+
+	while(1)
+	{
+		rtc_getdatetime(&rtcdate);
+		sprintf(buff,"%d/%d/%d %d:%d:%d",rtcdate.year, rtcdate.month, rtcdate.day, rtcdate.hour, rtcdate.minute, rtcdate.second);
+		printf("时间->%s\r\n",buff);
+		led_turn();
+		delay_ms(1000);
+	}
 	return 0;
 }

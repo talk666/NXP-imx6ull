@@ -21,6 +21,7 @@ INCLUDES =  imx6ul \
 			bsp/epit \
 			bsp/uart \
 			bsp/int  \
+			bsp/rtc  \
 			stdio/include \
 			stdio/lib 
 INCLUDE = $(patsubst %, -I %, $(INCLUDES))
@@ -38,6 +39,7 @@ SRCDIRS =   project \
 			bsp/epit \
 			bsp/uart \
 			bsp/int \
+			bsp/rtc  \
 			stdio/include \
 			stdio/lib 
 
