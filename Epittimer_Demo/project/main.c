@@ -8,6 +8,7 @@
 #include "bsp_epit.h"
 #include "bsp_uart.h"
 #include "bsp_rtc.h"
+#include "bsp_ap3216c.h"
 #include "stdio.h"
 
 /*
@@ -17,7 +18,7 @@
  */
 int main(void)
 {
-
+	unsigned short ir, als, ps;
 	struct rtc_datetime rtcdate;
 	char buff[160] = {0};
 
@@ -44,12 +45,15 @@ int main(void)
 
 	RTC_Init();                      /*rtc初始化*/
 
-
+	ap3216c_init();                   /*ap3216c传感器初始化*/
+	
 	while(1)
-	{
+	{	
+		ap3216c_readdata(&ir, &ps, &als);		/* 读取数据		  	*/
+
 		rtc_getdatetime(&rtcdate);
-		sprintf(buff,"%d/%d/%d %d:%d:%d",rtcdate.year, rtcdate.month, rtcdate.day, rtcdate.hour, rtcdate.minute, rtcdate.second);
-		printf("时间->%s\r\n",buff);
+		sprintf(buff,"%d/%d/%d %d:%d:%d 红外线(ir):%d 距离(ps):%d (光强度)als:%d",rtcdate.year, rtcdate.month, rtcdate.day, rtcdate.hour, rtcdate.minute, rtcdate.second, ir, ps, als);
+		printf("message->%s\r\n",buff);
 		led_turn();
 		delay_ms(1000);
 	}
