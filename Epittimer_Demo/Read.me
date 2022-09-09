@@ -14,3 +14,29 @@ I.MX6U-ALPHA 开发板的 DDR 容量有两种：512MB 和 256MB，起始地址�
 
 
 /*硬件IIC章节着重对应手册看看*/
+
+
+/*浮点数运算会卡死原因*/
+因为没有开启6ull的硬件浮点数运算
+编译的时候也没有使用浮点运算
+1、开启6ull的硬件浮点单元
+/*
+ * @description	: 使能I.MX6U的硬件NEON和FPU
+ * @param 		: 无
+ * @return 		: 无
+ */
+ void imx6ul_hardfpu_enable(void)
+{
+	uint32_t cpacr;
+	uint32_t fpexc;
+
+	/* 使能NEON和FPU */
+	cpacr = __get_CPACR();
+	cpacr = (cpacr & ~(CPACR_ASEDIS_Msk | CPACR_D32DIS_Msk))
+		   |  (3UL << CPACR_cp10_Pos) | (3UL << CPACR_cp11_Pos);
+	__set_CPACR(cpacr);
+	fpexc = __get_FPEXC();
+	fpexc |= 0x40000000UL;	
+	__set_FPEXC(fpexc);
+}
+2、编译的时候添加浮点编译

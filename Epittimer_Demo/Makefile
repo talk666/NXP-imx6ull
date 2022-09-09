@@ -22,8 +22,10 @@ INCLUDES =  imx6ul \
 			bsp/uart \
 			bsp/int  \
 			bsp/iic  \
+			bsp/spi \
 			bsp/rtc  \
 			bsp/ap3216c \
+			bsp/icm20608 \
 			stdio/include \
 			stdio/lib 
 INCLUDE = $(patsubst %, -I %, $(INCLUDES))
@@ -42,7 +44,9 @@ SRCDIRS =   project \
 			bsp/uart \
 			bsp/int \
 			bsp/rtc  \
+			bsp/icm20608 \
 			bsp/ap3216c \
+			bsp/spi \
 			bsp/iic  \
 			stdio/include \
 			stdio/lib 
@@ -68,6 +72,9 @@ CFLAGS += $(INCLUDE)
 CFLAGS += -fno-builtin 
 CFLAGS += -O2
 CFLAGS += -Wa,-mimplicit-it=thumb
+#硬件浮点进行编译（加不加好像没有影响）
+CFLAGS += -march=armv7-a -mfpu=neon-vfpv4 -mfloat-abi=hard
+
 
 .PHONY:clean
 

@@ -14,4 +14,7 @@ void Uart_clk_init(void);
 void AHB_CLK_ROOT_Init(void);
 void IPG_CLK_ROOT_Init(void);
 void PERCLK_CLK_ROOT_Init(void);
+
+void SPI_clock_init(void);
+
 #endif

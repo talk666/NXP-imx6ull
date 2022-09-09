@@ -9,7 +9,28 @@
 #include "bsp_uart.h"
 #include "bsp_rtc.h"
 #include "bsp_ap3216c.h"
+#include "bsp_icm20608.h"
 #include "stdio.h"
+
+/*
+ * @description	: 使能I.MX6U的硬件NEON和FPU 和cp15有关
+ * @param 		: 无
+ * @return 		: 无
+ */
+ void imx6ul_hardfpu_enable(void)
+{
+	uint32_t cpacr;
+	uint32_t fpexc;
+
+	/* 使能NEON和FPU */
+	cpacr = __get_CPACR();
+	cpacr = (cpacr & ~(CPACR_ASEDIS_Msk | CPACR_D32DIS_Msk))
+		   |  (3UL << CPACR_cp10_Pos) | (3UL << CPACR_cp11_Pos);
+	__set_CPACR(cpacr);
+	fpexc = __get_FPEXC();
+	fpexc |= 0x40000000UL;	
+	__set_FPEXC(fpexc);
+}
 
 /*
  * @description : mian函数
@@ -18,9 +39,6 @@
  */
 int main(void)
 {
-	unsigned short ir, als, ps;
-	struct rtc_datetime rtcdate;
-	char buff[160] = {0};
 
 	int_init();                     /*中断处理*/
 
@@ -47,15 +65,26 @@ int main(void)
 
 	ap3216c_init();                   /*ap3216c传感器初始化*/
 	
+	icm20608_init();               /*icm20608模块初始化*/
+
+	imx6ul_hardfpu_enable();      //I.MX6U的硬件NEON和FPU 和cp15有关
+
+	while(icm20608_init())		/* 初始化ICM20608	 			*/
+	{	
+		printf("ICM20608 Check Failed!Please Check!\r\n");
+		delay_ms(500);
+	}	
+	
+	printf("ICM20608 Check secceed!!!\r\n");
+
 	while(1)
 	{	
-		ap3216c_readdata(&ir, &ps, &als);		/* 读取数据		  	*/
+		icm20608_getdata();
+		delay_ms(50);
 
-		rtc_getdatetime(&rtcdate);
-		sprintf(buff,"%d/%d/%d %d:%d:%d 红外线(ir):%d 距离(ps):%d (光强度)als:%d",rtcdate.year, rtcdate.month, rtcdate.day, rtcdate.hour, rtcdate.minute, rtcdate.second, ir, ps, als);
-		printf("message->%s\r\n",buff);
-		led_turn();
-		delay_ms(1000);
+		printf("accel x = %d,accel y = %d,accel z = %d\r\n",icm20608_dev.accel_x_adc, icm20608_dev.accel_y_adc, icm20608_dev.accel_z_adc);
+		printf("gyrp  x = %d,gyro  y = %d,gyro  z = %d\r\n",icm20608_dev.gyro_x_adc, icm20608_dev.gyro_y_adc, icm20608_dev.gyro_z_adc);
+		printf("temp    = %d\r\n",icm20608_dev.temp_adc);
 	}
 	return 0;
 }

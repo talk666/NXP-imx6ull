@@ -42,6 +42,9 @@ void Imx6u_clkinit(void)
 
 	/*使能串口时钟*/
 	Uart_clk_init();
+
+	/*使能SPI时钟*/
+	SPI_clock_init();
 }
 
 //CCM_ANALOG_PFD_528n 设置pll2的4路fd时钟
@@ -118,4 +121,11 @@ void Uart_clk_init(void)
 {
 	CCM->CSCDR1 &= ~(1 << 6);/*uart_clk = pll3_clk = 480M  进行6分频后为80M*/
 	CCM->CSCDR1 &= ~0x3f;/*一分频*/
+}
+
+/*SPI时钟配置 pll3_60HZ*/
+void SPI_clock_init(void)
+{
+	CCM->CSCDR2 &= ~(1 << 18);  /*derive clock from pll3_60m*/
+	CCM->CSCDR2 &= ~(0x3f << 19);  /*divide by 1 bit19-24*/
 }
